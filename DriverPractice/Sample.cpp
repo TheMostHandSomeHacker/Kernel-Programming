@@ -47,7 +47,19 @@ NTSTATUS SampleWrite(PDEVICE_OBJECT DeviceObject, PIRP Irp) {
 			break;
 		}
 
+		auto oldPriority = KeSetPriorityThread(thread, data->Priority);
+		KdPrint(("Priority change for thread %u from %d to %d succedded!\n", data->ThreadId, oldPriority, data->Priority));
+		ObDereferenceObject(thread);
+
+		information = sizeof(data);
+
 	} while (false);
+
+	// Complete the irp with the status 
+	Irp->IoStatus.Status = status;
+	Irp->IoStatus.Information = information;
+	IoCompleteRequest(Irp, IO_NO_INCREMENT);
+	return status;
 }
 
 extern "C" NTSTATUS
