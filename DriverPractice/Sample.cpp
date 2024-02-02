@@ -1,5 +1,4 @@
 #include <ntifs.h>
-#include <ntddk.h>
 #include "BoosterCommon.h"
 
 // Empty for now
